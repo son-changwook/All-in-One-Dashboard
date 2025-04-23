@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dashboard.mapper.PaymentMapper">
+    <!-- PaymentDTO와 데이터베이스 컬럼 간의 매핑 정의 -->
+    <resultMap id="paymentResultMap" type="com.example.dashboard.dto.PaymentDTO">
+        <id property="paymentId" column="payment_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="impUid" column="imp_uid"/>
+        <result property="merchantUid" column="merchant_uid"/>
+        <result property="amount" column="amount"/>
+        <result property="status" column="status"/>
+        <result property="paidAt" column="paid_at"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <!-- 새로운 결제 정보를 데이터베이스에 저장 -->
+    <insert id="insertPayment" parameterType="com.example.dashboard.dto.PaymentDTO">
+        INSERT INTO payments (user_id, imp_uid, merchant_uid, amount, status, paid_at, created_at)
+        VALUES (#{userId}, #{impUid}, #{merchantUid}, #{amount}, #{status}, #{paidAt}, #{createdAt})
+    </insert>
+
+    <!-- 결제 ID로 결제 정보를 조회 -->
+    <select id="findById" resultMap="paymentResultMap">
+        SELECT * FROM payments WHERE payment_id = #{paymentId}
+    </select>
+
+    <!-- 아임포트 UID로 결제 정보를 조회 -->
+    <select id="findByImpUid" resultMap="paymentResultMap">
+        SELECT * FROM payments WHERE imp_uid = #{impUid}
+    </select>
+
+    <!-- 상점 UID로 결제 정보를 조회 -->
+    <select id="findByMerchantUid" resultMap="paymentResultMap">
+        SELECT * FROM payments WHERE merchant_uid = #{merchantUid}
+    </select>
+
+    <!-- 사용자 ID로 결제 정보 목록을 조회 -->
+    <select id="findByUserId" resultMap="paymentResultMap">
+        SELECT * FROM payments WHERE user_id = #{userId}
+    </select>
+
+    <!-- 결제 상태로 결제 정보 목록을 조회 -->
+    <select id="findByStatus" resultMap="paymentResultMap">
+        SELECT * FROM payments WHERE status = #{status}
+    </select>
+
+    <!-- 모든 결제 정보를 조회 -->
+    <select id="findAll" resultMap="paymentResultMap">
+        SELECT * FROM payments
+    </select>
+
+    <!-- 결제 정보를 수정 -->
+    <update id="updatePayment" parameterType="com.example.dashboard.dto.PaymentDTO">
+        UPDATE payments
+        SET user_id = #{userId},
+            imp_uid = #{impUid},
+            merchant_uid = #{merchantUid},
+            amount = #{amount},
+            status = #{status},
+            paid_at = #{paidAt}
+        WHERE payment_id = #{paymentId}
+    </update>
+
+    <!-- 결제 정보를 삭제 -->
+    <delete id="deletePayment">
+        DELETE FROM payments WHERE payment_id = #{paymentId}
+    </delete>
+</mapper> 

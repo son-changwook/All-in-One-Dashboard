@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dashboard.mapper.FileMapper">
+    <resultMap id="fileResultMap" type="com.example.dashboard.dto.FileDTO">
+        <id property="fileId" column="file_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="fileName" column="file_name"/>
+        <result property="fileUrl" column="file_url"/>
+        <result property="fileType" column="file_type"/>
+        <result property="uploadedAt" column="uploaded_at"/>
+    </resultMap>
+
+    <insert id="insertFile" parameterType="com.example.dashboard.dto.FileDTO">
+        INSERT INTO files (user_id, file_name, file_url, file_type, uploaded_at)
+        VALUES (#{userId}, #{fileName}, #{fileUrl}, #{fileType}, #{uploadedAt})
+    </insert>
+
+    <select id="findById" resultMap="fileResultMap">
+        SELECT * FROM files WHERE file_id = #{fileId}
+    </select>
+
+    <select id="findByUserId" resultMap="fileResultMap">
+        SELECT * FROM files WHERE user_id = #{userId}
+    </select>
+
+    <select id="findByFileType" resultMap="fileResultMap">
+        SELECT * FROM files WHERE file_type = #{fileType}
+    </select>
+
+    <select id="findAll" resultMap="fileResultMap">
+        SELECT * FROM files
+    </select>
+
+    <update id="updateFile" parameterType="com.example.dashboard.dto.FileDTO">
+        UPDATE files
+        SET file_name = #{fileName},
+            file_url = #{fileUrl},
+            file_type = #{fileType}
+        WHERE file_id = #{fileId}
+    </update>
+
+    <delete id="deleteFile">
+        DELETE FROM files WHERE file_id = #{fileId}
+    </delete>
+</mapper> 

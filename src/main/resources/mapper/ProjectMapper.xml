@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dashboard.mapper.ProjectMapper">
+    <resultMap id="projectResultMap" type="com.example.dashboard.dto.ProjectDTO">
+        <id property="projectId" column="project_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="title" column="title"/>
+        <result property="description" column="description"/>
+        <result property="repoUrl" column="repo_url"/>
+        <result property="deployedUrl" column="deployed_url"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <insert id="insertProject" parameterType="com.example.dashboard.dto.ProjectDTO">
+        INSERT INTO projects (user_id, title, description, repo_url, deployed_url, created_at)
+        VALUES (#{userId}, #{title}, #{description}, #{repoUrl}, #{deployedUrl}, #{createdAt})
+    </insert>
+
+    <select id="findById" resultMap="projectResultMap">
+        SELECT * FROM projects WHERE project_id = #{projectId}
+    </select>
+
+    <select id="findByUserId" resultMap="projectResultMap">
+        SELECT * FROM projects WHERE user_id = #{userId}
+    </select>
+
+    <select id="findAll" resultMap="projectResultMap">
+        SELECT * FROM projects
+    </select>
+
+    <update id="updateProject" parameterType="com.example.dashboard.dto.ProjectDTO">
+        UPDATE projects
+        SET title = #{title},
+            description = #{description},
+            repo_url = #{repoUrl},
+            deployed_url = #{deployedUrl}
+        WHERE project_id = #{projectId}
+    </update>
+
+    <delete id="deleteProject">
+        DELETE FROM projects WHERE project_id = #{projectId}
+    </delete>
+</mapper> 
